@@ -12,10 +12,12 @@ Run:
 
 sh
 flutter pub get
+
 🔹 Step 2: Sharing a Github Repo URL
 The easiest way to share a Github Repo is using a direct link:
 
 dart
+
 🔹 Step 3: Sharing an Image or File
 For sharing media, copy the file to a temporary directory before sharing:
 
@@ -39,6 +41,7 @@ import 'package:share_plus/share_plus.dart';
 
  final res =await SharePlus.instance.share(params);
  }
+
 🔹 Step 4: Using GitHub’s Native Sharing
 To ensure GitHub opens directly, use a URL-based approach:
 
