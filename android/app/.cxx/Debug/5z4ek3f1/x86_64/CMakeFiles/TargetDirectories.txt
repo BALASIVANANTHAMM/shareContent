@@ -1,0 +1,2 @@
+C:/Users/balas/IdeaProjects/shareContent/android/app/.cxx/Debug/5z4ek3f1/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/balas/IdeaProjects/shareContent/android/app/.cxx/Debug/5z4ek3f1/x86_64/CMakeFiles/rebuild_cache.dir

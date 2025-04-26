@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sharecontent/page_Content.dart';
-import 'package:sharecontent/provider/content_Provider.dart';
 import 'package:sharecontent/shareContent.dart';
 
 void main() {
@@ -14,13 +11,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => ShareProvider(),
-        ),
-      ],
-      child: MaterialApp(
+    return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -42,8 +33,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: HomePage(),
-      ),
-    );
+        home: const ShareContent(),
+      );
   }
 }

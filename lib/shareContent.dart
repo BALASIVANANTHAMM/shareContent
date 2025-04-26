@@ -1,100 +1,167 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
-import 'package:provider/provider.dart';
-import 'package:sharecontent/page_Content.dart';
-import 'package:sharecontent/provider/content_Provider.dart';
+import 'dart:io';
 
-class Share extends StatefulWidget {
-  const Share({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+
+class ShareContent extends StatefulWidget {
+  const ShareContent({super.key});
 
   @override
-  State<Share> createState() => _ShareState();
+  State<ShareContent> createState() => _ShareContentState();
 }
 
-class _ShareState extends State<Share> {
-  late String value = 'State Management';
-  late String value2 = 'Para Of That Title Text';
-  late String url = 'https://flutter.dev/';
-  late String cTit = 'Chooser Title For this Text';
-  final ctl = TextEditingController();
-  Future<void> share() async {
-    await FlutterShare.share(
-        title: value, text: value2, linkUrl: url, chooserTitle: cTit);
+class _ShareContentState extends State<ShareContent> {
+
+  late String url = 'https://github.com/BALASIVANANTHAMM/shareContent';
+  String name = "Bala Sivanantham";
+
+
+  shareText() async {
+    final params = ShareParams(
+      title: "Share Text",
+      text: 'Hi Iam $name',
+    );
+    final res =await SharePlus.instance.share(params);
+  }
+
+  shareTextWithImage() async {
+    final byteData = await rootBundle.load('assets/image.jpg');
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/image.jpg');
+    await file.writeAsBytes(byteData.buffer.asUint8List());
+    final params = ShareParams(
+      title: "Share Profile",
+      text: 'Share Profile Image Using share_plus',
+      files: [XFile(file.path)],
+    );
+
+    final res =await SharePlus.instance.share(params);
+  }
+
+  shareUri() async {
+    final byteData = await rootBundle.load('assets/image.jpg');
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/image.jpg');
+    await file.writeAsBytes(byteData.buffer.asUint8List());
+    final params = ShareParams(
+      title: "Share Profile",
+      text: url,
+      files: [XFile(file.path)],
+    );
+
+    final res =await SharePlus.instance.share(params);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Share Content'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 20,
+        backgroundColor: Colors.orangeAccent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30),)
+        ),
+        title: const Text(
+          'Share Content',
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold
           ),
-          Text(value),
-          SizedBox(
-            height: 20,
+        ),
+        actions: [
+          GestureDetector(
+            onTap: shareUri,
+            child: const Icon(Icons.share,color: Colors.white,)
           ),
-          Row(
-            children: [
-              SizedBox(
-                width: 70,
-              ),
-              Text(
-                'Name : ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                context.watch<ShareProvider>().userName,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            width: 300,
-            height: 50,
-            child: TextFormField(
-              controller: ctl,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7))),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 90,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    context.read<ShareProvider>().changeName(newName: ctl.text);
-                  },
-                  child: Text('Update')),
-              SizedBox(
-                width: 30,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
-                  },
-                  child: Text('Next Page')),
-            ],
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          ElevatedButton(onPressed: share, child: Text('Share'))
+          const SizedBox(width: 20,)
         ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20,),
+            GestureDetector(
+              onTap: shareTextWithImage,
+              child: const CircleAvatar(
+                radius: 70,
+                backgroundImage: AssetImage('assets/image.jpg'),
+              ),
+            ),
+            const SizedBox(height: 15,),
+            GestureDetector(
+              onTap: shareText,
+              child: const Text("Bala Sivanantham",style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 22
+              ),),
+            ),
+            const SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 12
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.black12
+                  ),
+                  child: const Text(
+                    "Following 0",
+                    style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  ),),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 12
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.black12
+                  ),
+                  child: const Text(
+                    "Followers 0",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold
+                    ),),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20,),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 16
+                ),
+                height: 1000,
+                child: GridView.builder(
+                  itemCount: 27,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                        height: 60,
+                        width: 60,
+                        child: Image.asset(
+                          fit: BoxFit.cover,
+                            'assets/image.jpg'));
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

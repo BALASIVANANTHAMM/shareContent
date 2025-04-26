@@ -1,0 +1,2 @@
+C:/Users/balas/IdeaProjects/shareContent/android/app/.cxx/RelWithDebInfo/w6u1146i/x86/CMakeFiles/edit_cache.dir
+C:/Users/balas/IdeaProjects/shareContent/android/app/.cxx/RelWithDebInfo/w6u1146i/x86/CMakeFiles/rebuild_cache.dir
